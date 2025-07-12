@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const client = require("../src/config/postgreSql");
+const client = require("../../src/config/postgreSql");
 
 // consumer 회원가입 SQL
 const insertConsumerSql = `

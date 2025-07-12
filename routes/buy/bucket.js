@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const client = require("../src/config/postgreSql");
-const checkLoginMiddleware = require("../src/middleware/checkLogin");
+const client = require("../../src/config/postgreSql");
+const checkLoginMiddleware = require("../../src/middleware/checkLogin");
 
 const insertBucketSql = `
   INSERT INTO account.bucket (account_idx, production_idx, created_at)

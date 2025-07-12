@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const client = require("../src/config/postgreSql");
+const client = require("../../src/config/postgreSql");
 
 const signinSql = `
   SELECT idx, id, name, email, phone, is_farmer, created_at

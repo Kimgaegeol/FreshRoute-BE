@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const client = require("../src/config/postgreSql");
-const checkLoginMiddleware = require("../src/middleware/checkLogin");
+const client = require("../../src/config/postgreSql");
+const checkLoginMiddleware = require("../../src/middleware/checkLogin");
 
 // 주문 삽입 SQL (state 고정, is_finished FALSE)
 const insertOrderSql = `

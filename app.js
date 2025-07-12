@@ -7,29 +7,23 @@ require("dotenv").config();
 
 var session = require("express-session");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var productionRouter = require("./routes/production");
-var ordersRouter = require("./routes/orders");
-
 var app = express();
 
+// 세션 미들웨어 설정
 app.use(
   session({
-    secret: "test_secret_key", // 테스트용 간단 secret (배포 시 반드시 변경)
-    resave: true, // 테스트에선 true로 해도 무방 (매 요청마다 세션 저장)
-    saveUninitialized: true, // 초기 세션도 저장
+    secret: "your-secret-key", // 반드시 랜덤하고 복잡한 값으로 설정
+    resave: false, // 요청마다 세션을 다시 저장하지 않음
+    saveUninitialized: false, // 초기화되지 않은 세션은 저장하지 않음
     cookie: {
-      maxAge: 1000 * 60 * 30, // 30분 (필요에 따라 조절)
+      maxAge: 1000 * 60 * 60, // 쿠키 유효시간 (밀리초) → 1시간
+      httpOnly: false, // 클라이언트에서 JS로 쿠키 접근 못하게 함 (보안)
+      secure: false, // HTTPS 환경이면 true (로컬 개발은 false)
     },
   })
 );
 
 app.use(express.static(path.join(__dirname, "public")));
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -37,10 +31,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+var indexRouter = require("./routes/index");
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/production", productionRouter);
-app.use("/orders", ordersRouter);
+
+const signupRouter = require("./routes/account/signup");
+const signinRouter = require("./routes/account/siginin");
+const signsearchRouter = require("./routes/account/search");
+const accountInfoRouter = require("./routes/account/info");
+app.use("/", signupRouter);
+app.use("/", signinRouter);
+app.use("/", signsearchRouter);
+app.use("/", accountInfoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

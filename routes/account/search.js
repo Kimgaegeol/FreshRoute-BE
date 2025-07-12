@@ -1,7 +1,7 @@
 // routes/account.js
 const express = require("express");
 const router = express.Router();
-const client = require("../src/config/postgreSql");
+const client = require("../../src/config/postgreSql");
 
 // ID 찾기 SQL
 const idSearchSql = `

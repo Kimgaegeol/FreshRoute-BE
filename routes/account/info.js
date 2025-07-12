@@ -1,8 +1,8 @@
 // routes/account.js
 const express = require("express");
 const router = express.Router();
-const client = require("../src/config/postgreSql");
-const checkLoginMiddleware = require("../src/middleware/checkLogin"); // 세션 확인용 미들웨어
+const client = require("../../src/config/postgreSql");
+const checkLoginMiddleware = require("../../src/middleware/checkLogin"); // 세션 확인용 미들웨어
 
 // consumer 정보 조회 SQL
 const consumerInfoSql = `
