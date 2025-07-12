@@ -54,8 +54,8 @@ router.delete("/:bucket_idx", checkLoginMiddleware, async (req, res, next) => {
 
     const { rows } = await client.query(
       `DELETE FROM account.bucket
-       WHERE idx = $1 AND account_idx = $2
-       RETURNING idx`,
+        WHERE idx = $1 AND account_idx = $2
+        RETURNING idx`,
       [bucket_idx, account_idx]
     );
 
@@ -83,13 +83,13 @@ router.get("/list", checkLoginMiddleware, async (req, res, next) => {
 
     const { rows } = await client.query(
       `SELECT b.idx AS bucket_idx, b.account_idx, b.production_idx,
-              p.name AS product_name, p.explain AS product_description,
-              p.price, p.image AS product_image, p.weight, p.expiration,
-              b.created_at AS added_at
-       FROM account.bucket b
-       LEFT JOIN production.list p ON b.production_idx = p.idx
-       WHERE b.account_idx = $1
-       ORDER BY b.created_at DESC`,
+                p.name AS product_name, p.explain AS product_description,
+                p.price, p.image AS product_image, p.weight, p.expiration,
+                b.created_at AS added_at
+        FROM account.bucket b
+        LEFT JOIN production.list p ON b.production_idx = p.idx
+        WHERE b.account_idx = $1
+        ORDER BY b.created_at DESC`,
       [account_idx]
     );
 

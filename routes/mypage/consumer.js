@@ -3,8 +3,8 @@ const router = express.Router();
 const client = require("../../src/config/postgreSql");
 const checkLoginMiddleware = require("../../src/middleware/checkLogin");
 
-/* GET /my/consumer/buy-history — 로그인된 유저의 주문(구매) 내역 조회 */
-router.get("/buy-history", checkLoginMiddleware, async (req, res, next) => {
+/* GET /my/consumer/buy/list — 로그인된 유저의 주문(구매) 내역 조회 */
+router.get("/buy/list", checkLoginMiddleware, async (req, res, next) => {
   try {
     const account_idx = req.session.user.idx;
 
