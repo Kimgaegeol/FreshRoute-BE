@@ -4,21 +4,28 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
+const cors = require("cors");
 
-var session = require("express-session");
+const session = require("express-session");
 
-var app = express();
+const app = express();
 
-// 세션 미들웨어 설정
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      return callback(null, true);
+    },
+    credentials: true, // 쿠키 허용
+  })
+);
+
 app.use(
   session({
-    secret: "your-secret-key", // 반드시 랜덤하고 복잡한 값으로 설정
-    resave: false, // 요청마다 세션을 다시 저장하지 않음
-    saveUninitialized: false, // 초기화되지 않은 세션은 저장하지 않음
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60, // 쿠키 유효시간 (밀리초) → 1시간
-      httpOnly: false, // 클라이언트에서 JS로 쿠키 접근 못하게 함 (보안)
-      secure: false, // HTTPS 환경이면 true (로컬 개발은 false)
+      maxAge: 1000 * 60 * 60,
     },
   })
 );
@@ -34,14 +41,21 @@ app.use(express.static(path.join(__dirname, "public")));
 var indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
-const signupRouter = require("./routes/account/signup");
-const signinRouter = require("./routes/account/siginin");
-const signsearchRouter = require("./routes/account/search");
-const accountInfoRouter = require("./routes/account/info");
-app.use("/", signupRouter);
-app.use("/", signinRouter);
-app.use("/", signsearchRouter);
-app.use("/", accountInfoRouter);
+const accountRouter = require("./routes/account");
+const productionRouter = require("./routes/production");
+const bucketRouter = require("./routes/bucket");
+const payRouter = require("./routes/pay");
+const saleRouter = require("./routes/sale");
+const mypageConsumerRouter = require("./routes/mypage/consumer");
+const mypageFarmerRouter = require("./routes/mypage/farmer");
+
+app.use("/account", accountRouter);
+app.use("/production", productionRouter);
+app.use("/bucket", bucketRouter);
+app.use("/pay", payRouter);
+app.use("/sale", saleRouter);
+app.use("/my/consumer", mypageConsumerRouter);
+app.use("/my/farmer", mypageFarmerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -49,19 +63,18 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+app.use((err, req, res, next) => {
+  console.error("Error:", err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
 });
 
 if (require.main === module) {
   const port = process.env.PORT || 3000;
-  app.listen(port, () => {
+  // 0.0.0.0 으로 바인딩해야 LAN IP로도 접근 가능
+  app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
   });
 }
