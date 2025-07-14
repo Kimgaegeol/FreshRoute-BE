@@ -13,6 +13,7 @@ router.get("/home", async function (req, res, next) {
       LIMIT 10;
     `;
     const { rows: products } = await client.query(sql);
+    console.log(products);
     res.json({ products });
   } catch (err) {
     console.error("DB query error:", err);
