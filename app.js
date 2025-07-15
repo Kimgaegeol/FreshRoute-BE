@@ -48,6 +48,7 @@ const payRouter = require("./routes/pay");
 const saleRouter = require("./routes/sale");
 const mypageConsumerRouter = require("./routes/mypage/consumer");
 const mypageFarmerRouter = require("./routes/mypage/farmer");
+const fertilizerRouter = require("./routes/fertilizer");
 
 app.use("/account", accountRouter);
 app.use("/production", productionRouter);
@@ -56,6 +57,7 @@ app.use("/pay", payRouter);
 app.use("/sale", saleRouter);
 app.use("/my/consumer", mypageConsumerRouter);
 app.use("/my/farmer", mypageFarmerRouter);
+app.use("/api", fertilizerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
