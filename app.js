@@ -39,7 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 var indexRouter = require("./routes/index");
-app.use("/", indexRouter);
+app.use("/backend", indexRouter);
 
 const accountRouter = require("./routes/account");
 const productionRouter = require("./routes/production");
@@ -50,14 +50,14 @@ const mypageConsumerRouter = require("./routes/mypage/consumer");
 const mypageFarmerRouter = require("./routes/mypage/farmer");
 const fertilizerRouter = require("./routes/fertilizer");
 
-app.use("/account", accountRouter);
-app.use("/production", productionRouter);
-app.use("/bucket", bucketRouter);
-app.use("/pay", payRouter);
-app.use("/sale", saleRouter);
-app.use("/my/consumer", mypageConsumerRouter);
-app.use("/my/farmer", mypageFarmerRouter);
-app.use("/api", fertilizerRouter);
+app.use("/backend/account", accountRouter);
+app.use("/backend/production", productionRouter);
+app.use("/backend/bucket", bucketRouter);
+app.use("/backend/pay", payRouter);
+app.use("/backend/sale", saleRouter);
+app.use("/backend/my/consumer", mypageConsumerRouter);
+app.use("/backend/my/farmer", mypageFarmerRouter);
+app.use("/backend/api", fertilizerRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
